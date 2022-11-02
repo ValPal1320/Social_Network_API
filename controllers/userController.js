@@ -50,7 +50,7 @@ module.exports = {
                 (user) =>
                     !user
                         ? res.status(404).json({ message: "User ID does not exist" })
-                        : res.json(user)
+                        : Thought.deleteMany({ _id: { $in: user.thoughts } })
             )
             .then(() => res.json({ message: 'User has been successfully deleted.' }))
             .catch((err) => res.status(500).json(err));
@@ -60,7 +60,7 @@ module.exports = {
     addFriend(req, res) {
         User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friends: req.params.friendId } },
+            { $push: { friends: req.params.friendId } },
             { runValidators: true, new: true }
         )
             .then((user) =>

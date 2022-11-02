@@ -24,17 +24,17 @@ module.exports = {
     //Create a new thought
     createThought(req, res) {
         Thought.create(req.body)
-            .then(({ _id }) => {
+            .then(({ thought }) => {
                 return User.findOneAndUpdate(
                     { _id: req.body.userId },
-                    { $push: { thoughts: _id } },
+                    { $push: { thought: thought._id } },
                     { new: true }
                 );
             })
             .then((thought) =>
                 !thought
                     ? res.status(404).json({ message: "User ID does not exist" })
-                    : res.json(thought)
+                    : res.json('Thought was created')
             )
             .catch((err) => res.status(500).json(err));
     },

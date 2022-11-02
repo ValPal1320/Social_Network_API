@@ -45,17 +45,14 @@ module.exports = {
 
     //Delete a user
     deleteUser(req, res) {
-        User.findOneAndUpdate(
-            { _id: req.params.userId },
-            { $pull: { friends: req.params.friendId } },
-            { new: true }
-        )
+        User.findByIdAndDelete({ _id: req.params.userId })
             .then(
                 (user) =>
                     !user
                         ? res.status(404).json({ message: "User ID does not exist" })
                         : res.json(user)
             )
+            .then(() => res.json({ message: 'User has been successfully deleted.' }))
             .catch((err) => res.status(500).json(err));
     },
 

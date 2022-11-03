@@ -1,32 +1,27 @@
 // Require Mongoose
-const { Schema, model } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
 const moment = require('moment');
 
 const ReactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => {
-                return new Types.ObjectId()
-            },
+            default: () => new Types.ObjectId()
         },
         reactionBody: {
             type: String,
-            required: () => {
-                return this.reactionBody.length <= 280
-            }
+            required: true,
+            maxlength: 280
         },
         username: {
             type: String,
             required: true,
         },
-        createdAt: [{
+        createdAt: {
             type: Date,
             default: Date.now,
-            get: (createdAt) => {
-                return moment(createdAt).format("MMMM Do YYYY, h:mm:ss")
-            }
-        }]
+            get: (createdAt) => moment(createdAt).format("MMM DD YYYY, h:mm a")
+        }
     },
     {
         toJSON: {
@@ -39,9 +34,9 @@ const ThoughtSchema = new Schema(
     {
         thoughtText: {
             type: String,
-            required: () => {
-                return this.thoughtText.length >= 1 && this.thoughtText.length <= 280
-            },
+            required: true,
+            minlength: 1,
+            maxlength: 280
         },
         username: {
             type: String,
@@ -49,13 +44,11 @@ const ThoughtSchema = new Schema(
         },
         reactions: [ReactionSchema],
 
-        createdAt: [{
+        createdAt: {
             type: Date,
             default: Date.now,
-            get: (createdAt) => {
-                return moment(createdAt).format("MMMM Do YYYY, h:mm:ss")
-            }
-        }]
+            get: (createdAt) => moment(createdAt).format("MMM DD YYYY, h:mm a")
+        }
     },
     {
         toJSON: {

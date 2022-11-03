@@ -13,19 +13,13 @@ const {
 
 } = require('../../controllers/thoughtController');
 
-// /api/thoughts <GET>
+// /api/thoughts <GET> and <POST>
 router.route('/').get(getAllThoughts).post(createThought);
 
 // /api/thoughts/:id <GET, PUT, DELETE>
-router.route('/:id').get(getThoughtById).put(updateThought).delete(deleteThought);
+router.route('/:thoughtId').get(getThoughtById).put(updateThought).delete(deleteThought);
 
-// /api/thoughts/:userId <POST>
-// router.route('/:userId').post(createThought);
-
-// /api/thoughts/:thoughtId/reactions <POST>
-router.route('/:thoughtId/reactions').post(addReaction);
-
-// /api/thoughts/:thoughtId/reactionId <DELETE>
-router.route('/:thoughtId/reactions/:reactionId').delete(deleteReaction);
+// /api/thoughts/:thoughtId/reactions <POST> and <DELETE>
+router.route('/:thoughtId/reactions').post(addReaction).delete(deleteReaction);
 
 module.exports = router;

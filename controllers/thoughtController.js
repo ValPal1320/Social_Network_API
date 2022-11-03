@@ -11,7 +11,7 @@ module.exports = {
 
     //Get one thought by Id
     getThoughtById(req, res) {
-        Thought.findOne({ _id: req.params.thoughtID })
+        Thought.findOne({ _id: req.params.thoughtId })
             .select("-___v")
             .then((thought) =>
                 !thought
@@ -26,8 +26,8 @@ module.exports = {
         Thought.create(req.body)
             .then((thought) => {
                 return User.findOneAndUpdate(
-                    { _id: req.body.userId },
-                    { $push: { thought: thought._id } },
+                    { username: req.body.username },
+                    { $push: { thoughts: thought._id } },
                     { new: true }
                 );
             })
